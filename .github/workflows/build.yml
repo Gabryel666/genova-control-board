@@ -1,0 +1,57 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build plugin bundle
+        run: npx rollup -c
+
+      - name: Check the bundle exists
+        run: test -s com.genova.control-board.sdPlugin/bin/plugin.js
+
+      - name: Type-check icons manifest paths
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          sd = pathlib.Path("com.genova.control-board.sdPlugin")
+          manifest = json.loads((sd / "manifest.json").read_text())
+          missing = []
+          for base in [manifest["Icon"], manifest["CategoryIcon"]] + \
+                      [a["Icon"] for a in manifest["Actions"]] + \
+                      [a["States"][0]["Image"] for a in manifest["Actions"]]:
+              for suffix in (".png", "@2x.png"):
+                  if not (sd / (base + suffix)).exists():
+                      missing.append(base + suffix)
+          for action in manifest["Actions"]:
+              pi = action.get("PropertyInspectorPath")
+              if pi and not (sd / pi).exists():
+                  missing.append(pi)
+          if missing:
+              print("fichiers manquants:", *missing, sep="\n  ")
+              sys.exit(1)
+          print("manifest OK")
+          PY
+
+      - name: Package plugin
+        run: npx streamdeck pack com.genova.control-board.sdPlugin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: genova-control-board
+          path: "*.streamDeckPlugin"

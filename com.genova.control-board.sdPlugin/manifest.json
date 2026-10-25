@@ -1,0 +1,94 @@
+{
+  "UUID": "com.genova.control-board",
+  "Name": "Genova Control Board",
+  "Version": "0.1.0.0",
+  "Author": "Genova",
+  "CodePath": "bin/plugin.js",
+  "Description": "Pilote n'importe quelle instance Hermes Agent depuis un Stream Deck : gateway, modèle, tâches cron et métriques système.",
+  "Icon": "imgs/plugin/marketplace",
+  "SDKVersion": 2,
+  "Category": "Genova Control Board",
+  "CategoryIcon": "imgs/plugin/category-icon",
+  "Software": {
+    "MinimumVersion": "6.6"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    },
+    {
+      "Platform": "mac",
+      "MinimumVersion": "12"
+    }
+  ],
+  "Nodejs": {
+    "Version": "20"
+  },
+  "Actions": [
+    {
+      "Name": "Hermes Gateway",
+      "UUID": "com.genova.control-board.status",
+      "Icon": "imgs/actions/status/icon",
+      "Tooltip": "État du gateway Hermes ; un clic démarre, arrête ou redémarre selon le mode choisi.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/status.html",
+      "States": [
+        {
+          "Image": "imgs/actions/status/key",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Hermes Model",
+      "UUID": "com.genova.control-board.model",
+      "Icon": "imgs/actions/model/icon",
+      "Tooltip": "Modèle principal actif ; un clic applique le modèle configuré.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/model.html",
+      "States": [
+        {
+          "Image": "imgs/actions/model/key",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Hermes Cron",
+      "UUID": "com.genova.control-board.cron",
+      "Icon": "imgs/actions/cron/icon",
+      "Tooltip": "Une tâche cron Hermes : état de la dernière exécution, un clic la déclenche maintenant.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/cron.html",
+      "States": [
+        {
+          "Image": "imgs/actions/cron/key",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Hermes Metric",
+      "UUID": "com.genova.control-board.metric",
+      "Icon": "imgs/actions/metric/icon",
+      "Tooltip": "Métrique live du Hermes : CPU, RAM, disque, sessions ou messages.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/metric.html",
+      "States": [
+        {
+          "Image": "imgs/actions/metric/key",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    }
+  ]
+}

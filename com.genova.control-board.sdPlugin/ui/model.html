@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="fr">
+  <meta charset="utf-8" />
+  <script src="sdpi-components.js"></script>
+  <style>
+    .section { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;
+      margin: 12px 0 4px 0; padding-bottom: 2px; border-bottom: 1px solid #333; }
+    .hint { font-size: 10px; color: #666; margin-top: 2px; }
+    code { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+  <sdpi-item label="Libellé">
+    <sdpi-textfield setting="label" placeholder="MODEL"></sdpi-textfield>
+  </sdpi-item>
+
+  <sdpi-item label="Provider">
+    <sdpi-textfield setting="provider" placeholder="openrouter"></sdpi-textfield>
+  </sdpi-item>
+
+  <sdpi-item label="Modèle">
+    <sdpi-textfield setting="model" placeholder="deepseek/deepseek-v4.1-flash"></sdpi-textfield>
+  </sdpi-item>
+
+  <div class="hint">
+    La touche affiche toujours le modèle réellement configuré. Un clic applique
+    le couple provider / modèle ci-dessus — une touche par modèle, pour un
+    sélecteur en un geste. Champs vides = touche en lecture seule.<br />
+    L'écriture passe par <code>POST /api/model/set</code> et s'applique aux
+    <b>nouvelles</b> sessions.
+  </div>
+
+  <div class="section">Gateway Hermes (commun à toutes les touches)</div>
+
+  <sdpi-item label="URL">
+    <sdpi-textfield setting="baseUrl" global placeholder="http://localhost:9119"></sdpi-textfield>
+  </sdpi-item>
+
+  <sdpi-item label="Token">
+    <sdpi-password setting="token" global placeholder="auto-découvert"></sdpi-password>
+  </sdpi-item>
+
+</body>
+</html>

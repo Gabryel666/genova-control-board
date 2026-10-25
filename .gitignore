@@ -1,0 +1,5 @@
+node_modules/
+com.genova.control-board.sdPlugin/bin/
+*.streamDeckPlugin
+*.log
+.DS_Store
