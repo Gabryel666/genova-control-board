@@ -16,40 +16,27 @@ jobs:
         with:
           node-version: "20"
           cache: npm
+          cache-dependency-path: streamdeck/package-lock.json
 
-      - run: npm ci
+      - name: Install Stream Deck plugin dependencies
+        working-directory: streamdeck
+        run: npm ci
 
-      - name: Build plugin bundle
-        run: npx rollup -c
+      - name: Build the board and assemble assets
+        working-directory: streamdeck
+        run: npm run build
 
-      - name: Check the bundle exists
-        run: test -s com.genova.control-board.sdPlugin/bin/plugin.js
+      - name: Bundle exists
+        run: test -s assets/com.genova.control-board.sdPlugin/bin/plugin.js
 
-      - name: Type-check icons manifest paths
-        run: |
-          python3 - <<'PY'
-          import json, pathlib, sys
-          sd = pathlib.Path("com.genova.control-board.sdPlugin")
-          manifest = json.loads((sd / "manifest.json").read_text())
-          missing = []
-          for base in [manifest["Icon"], manifest["CategoryIcon"]] + \
-                      [a["Icon"] for a in manifest["Actions"]] + \
-                      [a["States"][0]["Image"] for a in manifest["Actions"]]:
-              for suffix in (".png", "@2x.png"):
-                  if not (sd / (base + suffix)).exists():
-                      missing.append(base + suffix)
-          for action in manifest["Actions"]:
-              pi = action.get("PropertyInspectorPath")
-              if pi and not (sd / pi).exists():
-                  missing.append(pi)
-          if missing:
-              print("fichiers manquants:", *missing, sep="\n  ")
-              sys.exit(1)
-          print("manifest OK")
-          PY
+      - name: Validate the Stream Deck plugin
+        run: npx --yes @elgato/cli validate assets/com.genova.control-board.sdPlugin
 
-      - name: Package plugin
-        run: npx streamdeck pack com.genova.control-board.sdPlugin
+      - name: Package the board
+        run: npx --yes @elgato/cli pack assets/com.genova.control-board.sdPlugin
+
+      - name: Tests (Hermes plugin side, assets, install safety)
+        run: python3 -m unittest discover -s tests -v
 
       - uses: actions/upload-artifact@v4
         with:

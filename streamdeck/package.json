@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Stream Deck plugin that pilots any Hermes Agent gateway: status, model, cron jobs, live metrics.",
+  "description": "Stream Deck plugin sources for the Genova Control Board, bundled inside the Hermes plugin.",
   "license": "MIT",
   "author": "Genova",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && python3 sync_assets.py",
     "watch": "rollup -c -w",
-    "icons": "python3 tools/make_icons.py"
+    "icons": "python3 make_icons.py && python3 sync_assets.py"
   },
   "devDependencies": {
     "@elgato/cli": "^1.7.0",

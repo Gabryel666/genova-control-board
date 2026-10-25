@@ -6,7 +6,7 @@ import path from "node:path";
 import url from "node:url";
 
 const isWatching = !!process.env.ROLLUP_WATCH;
-const sdPlugin = "com.genova.control-board.sdPlugin";
+const sdPlugin = "../assets/com.genova.control-board.sdPlugin";
 
 const config = {
   input: "src/plugin.ts",

@@ -10,8 +10,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-ROOT = Path(__file__).resolve().parent.parent
-SD = ROOT / "com.genova.control-board.sdPlugin" / "imgs"
+ROOT = Path(__file__).resolve().parent
+SD = ROOT / "imgs"
 
 BG = (21, 21, 29, 255)
 BORDEAUX = (122, 26, 44, 255)

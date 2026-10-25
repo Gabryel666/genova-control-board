@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="fr">
+  <meta charset="utf-8" />
+  <script src="sdpi-components.js"></script>
+  <style>
+    .section { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;
+      margin: 12px 0 4px 0; padding-bottom: 2px; border-bottom: 1px solid #333; }
+    .hint { font-size: 10px; color: #666; margin-top: 2px; }
+    code { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+  <sdpi-item label="Métrique">
+    <sdpi-select setting="source" default="ram">
+      <option value="ram">RAM utilisée</option>
+      <option value="cpu">CPU</option>
+      <option value="disk">Disque</option>
+      <option value="sessions">Sessions</option>
+      <option value="messages">Messages</option>
+      <option value="uptime">Uptime de la machine</option>
+    </sdpi-select>
+  </sdpi-item>
+
+  <sdpi-item label="Libellé">
+    <sdpi-textfield setting="label" placeholder="automatique"></sdpi-textfield>
+  </sdpi-item>
+
+  <div class="hint">
+    RAM / CPU / disque viennent de <code>GET /api/system/stats</code>, les
+    compteurs de <code>GET /api/sessions/stats</code>. Au-delà de 70 % la touche
+    passe en orange, au-delà de 90 % en rouge. Un clic force une relecture.
+  </div>
+
+  <div class="section">Gateway Hermes (commun à toutes les touches)</div>
+
+  <sdpi-item label="URL">
+    <sdpi-textfield setting="baseUrl" global placeholder="http://localhost:9119"></sdpi-textfield>
+  </sdpi-item>
+
+  <sdpi-item label="Token">
+    <sdpi-password setting="token" global placeholder="auto-découvert"></sdpi-password>
+  </sdpi-item>
+
+</body>
+</html>

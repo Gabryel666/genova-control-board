@@ -1,0 +1,10 @@
+name: genova-control-board
+version: "0.1.0"
+description: "Genova Control Board — ships the Stream Deck plugin that pilots any Hermes gateway (status, model, cron, metrics) and installs it on this machine."
+author: Genova
+manifest_version: 1
+kind: standalone
+provides_tools:
+  - streamdeck_board_status
+  - streamdeck_board_install
+requires_env: []

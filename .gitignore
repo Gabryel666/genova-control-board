@@ -1,5 +1,6 @@
 node_modules/
-com.genova.control-board.sdPlugin/bin/
+streamdeck/node_modules/
 *.streamDeckPlugin
 *.log
 .DS_Store
+__pycache__/
