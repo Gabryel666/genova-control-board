@@ -38,28 +38,41 @@ function esc(text: string): string {
 
 /** Greedy word wrap for the label, so "MàJ description crédits" reads well. */
 function wrap(text: string, maxChars = 13, maxLines = 2): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
+  const raw = text.replace(/\s+/g, " ").trim();
+
+  // Pre-split words that are wider than a line on their own ("deepseek-v4.1-flash"),
+  // otherwise they overflow the tile instead of wrapping.
+  const words: string[] = [];
+  for (const word of raw.split(" ").filter(Boolean)) {
+    if (word.length <= maxChars) {
+      words.push(word);
+      continue;
+    }
+    for (let i = 0; i < word.length; i += maxChars) words.push(word.slice(i, i + maxChars));
+  }
+
   const lines: string[] = [];
   let current = "";
   for (const word of words) {
-    const candidate = current ? `${current} ${word}` : word;
-    if (candidate.length <= maxChars) {
-      current = candidate;
-    } else {
-      if (current) lines.push(current);
+    if (!current) {
       current = word;
+      continue;
     }
-    if (lines.length === maxLines) break;
+    if (`${current} ${word}`.length <= maxChars) {
+      current = `${current} ${word}`;
+    } else {
+      lines.push(current);
+      current = word;
+      if (lines.length === maxLines) break;
+    }
   }
   if (current && lines.length < maxLines) lines.push(current);
+  if (!lines.length) return [raw.slice(0, maxChars)];
 
-  if (!lines.length) return [text.slice(0, maxChars)];
-
-  // Overflow: clip the last line rather than silently losing the tail.
-  const consumed = lines.join(" ").length;
-  if (consumed < text.replace(/\s+/g, " ").length) {
+  // Overflow: mark the last line rather than silently losing the tail.
+  if (lines.join(" ").length < raw.length) {
     const last = lines[lines.length - 1];
-    lines[lines.length - 1] = last.length >= maxChars ? `${last.slice(0, maxChars - 1)}…` : `${last}…`;
+    lines[lines.length - 1] = `${last.slice(0, Math.max(1, maxChars - 1))}…`;
   }
   return lines;
 }
